@@ -1,0 +1,29 @@
+textarea{
+	resize: none;
+}
+.current-shift{
+	padding-left: 5%;
+	margin-top: -2%;
+}
+.change-shift{
+	padding-left: 5%;
+}
+.divide{
+	width: 86%;
+    background: #6d6d6d;
+    height: 2px;
+    margin-top: -12px;
+    margin-bottom: 30px;
+}
+.empty-warning{
+	box-shadow: 0 0 1px 1px red;
+}
+.btn-div{
+	margin-top: 5px;
+}
+.btn-div button{
+	width: 89px;
+}
+.hideBtn{
+	display: none;
+}
