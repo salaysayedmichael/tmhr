@@ -110,7 +110,8 @@
     <script src="<?php echo base_url();?>../assets/lib/onoffcanvas/onoffcanvas.js"></script>
     <!-- Screenfull -->
     <script src="<?php echo base_url();?>../assets/lib/screenfull/screenfull.js"></script>
-
+    <!-- Bootstrap Timepicker -->
+    <script src="<?php echo base_url()?>../assets/lib/timepicker/js/bootstrap-timepicker.js"></script>
     <!-- Metis core scripts -->
     <script src="<?php echo base_url();?>../assets/js/core.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.1/less.js"></script>

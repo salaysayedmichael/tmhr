@@ -1,58 +1,67 @@
 $(document).ready(function(){
-	//Enabling fields to be edited and showing Apply Button
-	$('#btn-change').on('click',function(){
 
-		$('#chg-shift-code,#chg-shift-details,#chg-time-in,#chg-time-out,#chg-break-in,#chg-break-out').fadeIn().removeAttr('disabled');
-		$('#btn-change').addClass('hideBtn')
-		$('#btn-apply').removeClass('hideBtn');
+	$('#shift_name,#time_in,#time_out').on('focus',function(){
+		$(this).removeClass('warning shake animated');	
 	});
-	//Validating empty fields and Applying data
-	$('#btn-apply').on('click',function(){
 
-		var shiftCode = $('#chg-shift-code').val();
-		var shiftDetails = $('#chg-shift-details').val();
-		var timeIn = $('#chg-time-in').val();
-		var timeOut = $('#chg-time-out').val();
-		var breakIn = $('#chg-break-in').val();
-		var breakOut = $('#chg-break-out').val();
+	$('#add_shift').on('click',function(){
+		// var base_url       = $(".base-url").val();
+		var baseUrl         = 'http://localhost/tmhr/index.php/Settings/storeShift';
+		var shiftName      = $('#shift_name').val();
+		var shiftDetails   = $('#shift_details').val();
+		var timeIn         = $('#time_in').val();
+		var timeOut        = $('#time_out').val();
+		var breakIn        = $('#break_in').val();
+		var breakOut       = $('#break_out').val();
+		// var token          = $.cookie("csrf_cookie_name");
+		var allow = false;
+		var addShift;
+		var total = $().val();
+		// var data = 'shiftName='+shiftName+'&shiftDetails='+shiftDetails+'&timeIn='+timeIn+'&timeOut='+timeOut+'&breakIn='+breakIn+'&breakOut='+breakOut+'&addShift='+addShift+'&csrf_token_name='+token+'';
+		// var data = {shiftName:shiftName, shiftDetails:shiftDetails,timeIn:timeIn,timeOut:timeOut,breakIn:breakIn,breakOut:breakOut,addShift:addShift,token:csrf_token_name}
+		if(shiftName == '' || timeIn == '' || timeOut == '')
+		{
+			$('#shift_name,#time_in,#time_out').addClass('warning shake animated');
+			setTimeout(function(){
+				$('#shift_name,#time_in,#time_out').removeClass('warning shake animated');
+			},4000);
+			alertify.error('Fill in empty field(s).');
 
-		if(shiftCode == ''){
-			$('#chg-shift-code').fadeIn().addClass('empty-warning');
-			alertify.error('Please Select Shift Code');
+		}
+		else if(timeIn >= timeOut)
+		{
+			alertify.error('Time in must be greater than time out!');
+		}
+		else if(breakIn != '' || breakOut != '')
+		{
+			if(breakIn >= breakOut)
+			{
+				alertify.error('Break In must be greater than break out!');
+			}
 		}
 
-		if(shiftDetails == ''){
-			$('#chg-shift-details').fadeIn().addClass('empty-warning');
-			alertify.error('Please Select Shift Details');
-		}
+		
+		
 
-		if(timeIn == ''){
-			$('#chg-time-in').fadeIn().addClass('empty-warning');
-			alertify.error('Please Select Time In');
-		}
+	// 	$.ajax({
+	// 		type:'POST',
+	// 		url:baseUrl,
+	// 		data:data,
+	// 		success: function(data){
+	// 			alert(data);
 
-		if(timeIn == ''){
-			$('#chg-time-out').fadeIn().addClass('empty-warning');
-			alertify.error('Please Select Time Out');
-		}
+	// 			if(data == 'success')
+	// 			{
+	// 				alert('success');
+	// 			}
+	// 			else
+	// 			{
+	// 				alert('failed');
+	// 			}
+	// 		}
+	// 	});
+	});
 
-		if($('#chg-shift-details').val().trim().length < 20){
-			$('#chg-shift-details').fadeIn().addClass('empty-warning');
-			alertify.error('Details\'s minimum characters are 20!');
-		}
+	$('#table-shifts').DataTable();
 
-		if($('#chg-shift-code,#chg-shift-details,#chg-time-in,#chg-time-out,#chg-break-in,#chg-break-out').val() != '' && $('#chg-shift-details').val().trim().length >= 20 ){
-			$('#chg-shift-code,#chg-shift-details,#chg-time-in,#chg-time-out,#chg-break-in,#chg-break-out').removeClass('empty-warning');
-			alertify.confirm('Change Shift','Your new shift will be'+'<br>'+'Shift: '+ shiftCode + '<br>' + 'Time In:' + timeIn + '<br>' + 'Time Out: ' + timeOut + '<br>' + 'Do you want to continue?', 
-				function(){
-					$('#chg-shift-code,#chg-shift-details,#chg-time-in,#chg-time-out,#chg-break-in,#chg-break-out').val('');
-					$('#chg-shift-code,#chg-shift-details,#chg-time-in,#chg-time-out,#chg-break-in,#chg-break-out').fadeIn().attr('disabled',true);
-					$('#btn-change').removeClass('hideBtn')
-					$('#btn-apply').addClass('hideBtn');
-					alertify.success('Updated Successfully');
-				},function(){
-
-				});
-		}
-	})
 });

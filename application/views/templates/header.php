@@ -36,6 +36,9 @@
 
     <!-- metisMenu stylesheet -->
     <link rel="stylesheet" href="<?php echo base_url();?>../assets/lib/metismenu/metisMenu.css">
+    <!-- bootstrap timepicker -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css"> -->
+    <link rel="stylesheet" href="<?php echo base_url();?>../assets/lib/timepicker/css/bootstrap-timepicker.css">
 
     <!-- onoffcanvas stylesheet -->
     <link rel="stylesheet" href="<?php echo base_url();?>../assets/lib/onoffcanvas/onoffcanvas.css">
@@ -299,9 +302,9 @@
                         <ul class="collapse">
                             <?php if(checkPermission('my_shift')):?>
                                 <li>
-                                    <a href="<?php echo base_url('settings/changeShift');?>">
+                                    <a href="<?php echo base_url('settings/viewShift');?>">
                                         <i class="fas fa-calendar-alt"></i>
-                                        &nbsp;Change Shift
+                                        &nbsp;Add Shift
                                     </a>
                                 </li>
                              <?php endif;?>
