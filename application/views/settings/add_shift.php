@@ -20,10 +20,12 @@
                             <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Modal title</h4>
+                                <h4 class="modal-title">Add Shift</h4>
                             </div>
                             <div class="modal-body">
+                                <form class="form-horizontal">
                                 <div class="add_shift">
+                                    <input class="my-token" type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>" />
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label>Shift Name:</label><br>
@@ -42,7 +44,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Shift Details:</label><br>
+                                            <label>Shift Details:(Optional)</label><br>
                                             <textarea class="form-control" id="shift_details" name="shift_details" autocomplete="off"></textarea>
                                         </div>
                                         <div class="col-md-4">
@@ -58,8 +60,10 @@
                                 </div><!-- End of div.add_shift -->
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" id='add_shift' name="add_shift" class="btn btn-primary" ><i class="fa fa-plus"></i> Add</button>
+                                <button type="button" class="btn-danger btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                <button type="submit" id='add_shift' name="add_shift" class="btn btn-primary" ><i class="fa fa-plus-square"></i> Add</button>
                             </div>
+
                             </div>
                             </div>
                         </div>
@@ -71,8 +75,9 @@
                                     <h4 class="modal-title">Update Shift</h4>
                                     </div>
                                     <div class="modal-body">
+                                        <form class="form-horizontal">
+                                        <input class="my-token" type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>" />
                                         <div class="update_shift">
-                                            <?=form_open(base_url('settings/updateShift'));?>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label>Shift Name:</label><br>
@@ -101,17 +106,13 @@
                                                     <input type="text" id="updt_breakOut" name="updt_breakOut" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <button type="submit" id="updt_shift" name="updt_shift" class="btn btn-primary">Update</button>
-                                                </div>
-                                            </div>
-                                            </form>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-default width-150" data-dismiss="modal">Close</button>
+                                     <button type="button" name="updt_shift" class="updt_shift btn btn-primary width-150">Update</button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div><!-- End of updt_modal -->
@@ -140,12 +141,13 @@
                                         <?php foreach($shifts as $key => $shift) :?>
                                     <tr>
                                         <td><?php echo $shift["shift_name"];?></td>
-                                        <td><?php echo date("h:i:s a",strtotime($shift["shift_details"]));?></td>
+                                        <td><?php echo empty($shift["shift_details"]) ? 'No details' : $shift["shift_details"];?></td>
                                         <td><?php echo date("h:i:s a",strtotime($shift["time_in"]));?></td>
                                         <td><?php echo date("h:i:s a",strtotime($shift["time_out"]));?></td>
-                                        <td><?php echo date("h:i:s a",strtotime($shift["break_in"]));?></td>
-                                        <td><?php echo date("h:i:s a",strtotime($shift["break_out"]));?></td>
-                                        <td>Action</td>
+                                        <td><?php echo $shift['break_in'] = '00:00:00.000000' ? 'Not set' : date("h:i:s a",strtotime($shift["break_in"]))?></td>
+                                        <td><?php echo $shift['break_out'] = '00:00:00.000000' ? 'Not set' : date("h:i:s a",strtotime($shift["break_out"]))?></td>
+                                        <td class="text-center"><input type="hidden" class="shift_id" value="<?php echo $shift['id'] ?>" ><a id="<?php echo $shift['id'] ?>" class="fetch_edit_shift"><i class="fa fa-edit fa-lg"></i> | </a><a><i class="fa fa-trash-alt fa-lg"></i></a></td>
+                                       
                                     </tr>
                                         <?php endforeach;?>
                                         <?php else:?>

@@ -12,3 +12,11 @@
 {
 	box-shadow: inset 0px 0px 6px 1px rgba(255,8,8,1);
 }
+.width-150
+{
+	width: 150px;
+}
+.border-none
+{
+	border:none;
+}

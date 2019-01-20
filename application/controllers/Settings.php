@@ -21,82 +21,138 @@
 	 		$this->checkuserPermission("my_shift");
 
 	 		// var data = 'shiftName='+shiftName+'&shiftDetails='+shiftDetails+'&timeIn='+timeIn+'&timeOut='+timeOut+'&breakIn='+breakIn+'&breakOut='+breakOut+'&addShift='+addShift+'';
-	 		if(isset($_POST['addShift']))
+	 		$result = array();
+	 		$result['error'] = True;
+	 		$result['message'] = 'Error occured while adding. Please contact system administrator.';
+	 		$data = array('shift_name'    => trim($_POST['shiftName']),
+	 					      'shift_details' => trim($_POST['shiftDetails']),
+	 					      'time_in'       => trim($_POST['timeIn']),
+	 					      'time_out'      => trim($_POST['timeOut']),
+	 					      'break_in'      => trim($_POST['breakIn']),
+	 					      'break_out'     => trim($_POST['breakOut'])
+	 					  	  );
+	 		if(!empty($data['shift_name']) && !empty($data['time_in']) && !empty($data['time_out']))
 	 		{
-	 			$data = array('shiftName'    => $_POST['shiftName'],
-	 					      'shiftDetails' => $_POST['shiftDetails'],
-	 					      'timeIn'       => $_POST['timeIn'],
-	 					      'timeOut'      => $_POST['timeOut'],
-	 					      'breakIn'      => $_POST['breakIn'],
-	 					      'breakOut'     => $_POST['breakOut']);
+	 				$check_shift_name = $this->settings_model->checkShiftNameDuplication($data["shift_name"]);
 
-		 		$result = $this->settings_model->insertShift($data);
-		 		
-		 		if($result == 'success')
-		 		{
-		 			echo 'success';
-		 		}
-	 		}	
-	 		
+	 				if($check_shift_name == False)
+	 				{
+	 					$check_time_in_out = $this->settings_model->checkTimeIODuplication($data['time_in'],$data['time_out']);
+	 					if($check_time_in_out == False)
+	 					{
+	 						$store_shift = $this->settings_model->insertShift($data);
+		 					if($store_shift){
+		 						$result['error'] = False;
+		 						$result['message'] = "New Shift added successfully.";
+		 					}else{
+		 						$result['message'] = "Failed to add new shift.";
+		 					}
+	 					}
+	 					else
+	 					{
+	 						$result['message'] = 'Time in or out is already added in database!';
+	 					}
+	 				}
+	 				else
+	 				{
+	 					$result['message'] = "Already have Shift Name: ".$data['shift_name'].'!';
+	 				}
+	 				
+	 		}
+
+	 		echo json_encode($result);
+	 			
+	 	}
+	 
+
+	 	public function getShiftData()
+	 	{
+	 		$id = $_POST['shift_id'];
+	 		$result = $this->settings_model->getShiftData($id);
+	 		foreach($result as $key => $data)
+
+	 		echo json_encode($data);
 	 	}
 
-/*
-	 	public function addShift() {
-	 		$this->checkuserPermission("my_shift");
-
-	 		$data = array();
-	 		$data['error'] = false;
-	 		$data = array('shift_name' => trim($this->input->post('shift_name')),
-	 					  'shift_details' => trim($this->input->post('shift_details')),
-	 					  'time_in' => trim($this->input->post('time_in')),
-	 					  'time_out' => trim($this->input->post('time_out')),
-	 					  'break_in' => trim($this->input->post('break_in')),
-	 					  'break_out' => trim($this->input->post('break_out')));
-
-	 		$add_shift = $this->input->post('add_shift');
-
-	 		if(isset($add_shift))
+	 	public function updtShiftData()
+	 	{
+	 		$result = array();
+	 		$result['error'] = True;
+	 		$result['message'] = 'Error occured while updating.Please contact the system administrator';
+	 		$data = array(
+	 					  'id'            => $_POST['id'],
+	 					  'shift_name'    => $_POST['shift_name'],
+	 					  'shift_details' => $_POST['shift_details'],
+	 					  'time_in'       => $_POST['time_in'],
+	 					  'time_out'      => $_POST['time_out'],
+	 					  'break_in'      => $_POST['break_in'],
+	 					  'break_out'     => $_POST['break_out']
+	 					 );
+	 		if(!empty($data))
 	 		{
-	 			if(empty($data['shift_name']) || empty($data['shift_details']) || empty($data['time_in']) || empty($data['time_out']))
+	 			$check_shiftname = $this->settings_model->checkShiftNameDuplication($data['shift_name']);
+	 			
+	 			if($check_shiftname)
 	 			{
-	 				echo "<script>alert('Empty field(s) found.')</script>";
+	 				$result['message'] = 'Shift name '.$data['shift_name'].' is already added.';
 	 			}
 	 			else
 	 			{
-	 				$this->settings_model->insertShift($data);
+	 				$check_timeinout = $this->settings_model->checkTimeIODuplication($data['time_in'],$data['time_out']);
+	 				if($check_timeinout)
+	 				{
+	 					$result['message'] = 'Time in '.$data['time_in'].' or out '.$data['time_out'].' is already added.';
+	 				}
+	 				else
+	 				{
+	 					$update = $this->settings_model->updtShiftData($data);
+			 			if($update)
+			 			{
+			 				$result['error'] = False;
+			 				$result['message'] = 'Shift update successfully.';
+			 			}
+			 			else
+			 			{
+			 				$result['message'] = 'Failed to update.';
+			 			}
+	 				}
 	 			}
-	 		}
-
-	 		$this->loadView("settings/add_shift", $data);
-	 		
-	 	}
-*/
-	 	public function updateShift()
-	 	{
-	 		$data = array('shift_name' => $this->input->post('updt_shiftName'),
-	 					  'shift_details' => $this->input->post('updt_shiftDetails'),
-	 					  'time_in' => $this->input->post('updt_timeIn'),
-	 					  'time_out' => $this->input->post('updt_timeOut'),
-	 					  'break_in' => $this->input->post('updt_breakIn'),
-	 					  'break_out' => $this->input->post('updt_breakOut'));
-	 		$updt = $this->input->post('updt_shift');
-	 		if(isset($updt))
-	 		{
-	 				
-	 				$this->settings_model->updateShift($data);
 	 			
 	 		}
-	 		$this->loadView("settings/add_shift", $data);
-	 	}
+	 		else
+	 		{
+	 			$result['message'] = 'Empty fields found!';
+	 		}
 
-	 	public function deleteShift()
-	 	{
-	 		$this->settings_model->deleteShift();
-	 	}
-
-	 	public function applyOvertime() {
-	 		$this->checkuserPermission("my_overtime");
-	 		$data = array();
-	 		$this->loadView("settings/my_shift", $data);
+	 		echo json_encode($result);
 	 	}
 	 }
+	 // 	public function updateShift()
+	 // 	{
+	 // 		$data = array('shift_name' => $this->input->post('updt_shiftName'),
+	 // 					  'shift_details' => $this->input->post('updt_shiftDetails'),
+	 // 					  'time_in' => $this->input->post('updt_timeIn'),
+	 // 					  'time_out' => $this->input->post('updt_timeOut'),
+	 // 					  'break_in' => $this->input->post('updt_breakIn'),
+	 // 					  'break_out' => $this->input->post('updt_breakOut'));
+	 // 		$updt = $this->input->post('updt_shift');
+	 // 		if(isset($updt))
+	 // 		{
+	 				
+	 // 				$this->settings_model->updateShift($data);
+	 			
+	 // 		}
+	 // 		$this->loadView("settings/add_shift", $data);
+	 // 	}
+
+	 // 	public function deleteShift()
+	 // 	{
+	 // 		$this->settings_model->deleteShift();
+	 // 	}
+
+	 // 	public function applyOvertime() {
+	 // 		$this->checkuserPermission("my_overtime");
+	 // 		$data = array();
+	 // 		$this->loadView("settings/my_shift", $data);
+	 // 	}
+	 // }
