@@ -134,4 +134,76 @@ class Employee extends MY_Controller {
 
         echo json_encode($result);
     }
+
+    public function updatePassword(){
+        $result            = array();
+        $result["message"] = "Error occured. Please contact system admin.";
+        $result["success"] = false;
+        $new_pass          = trim($_POST["new_pass"]);
+        $curr_pass         = trim($_POST["curr_pass"]);
+        $emp_id            = $_POST["emp_id"];
+        if(!empty($new_pass) && !empty($curr_pass)){
+            if(strlen($new_pass) >= 6){
+                if($new_pass == $curr_pass){
+                    $update = $this->employee_model->updatePassword($emp_id,$new_pass);
+                    if($update){
+                        $result["message"] = "Successfully updated password.";
+                        $result["success"] = true;
+                    }else{
+                        $result["message"] = "Old Password detected.";
+                    }
+                }else{
+                    $result["message"] = "Password does not match.";
+                }
+            }else{
+                $result["message"] = "Password must consists of at least 6 characters.";
+            }
+        }else{
+            $result["message"] = "Please provide password";
+        }
+
+        echo json_encode($result);
+    }
+
+    public function updateUsername(){
+        $result            = array();
+        $result["message"] = "Something went wrong. Please contact system admin.";
+        $result["success"] = false;
+        $username          = $_POST["username"];
+        $emp_id            = $_POST["emp_id"];
+        if(!empty($username)){
+            $check = $this->employee_model->checkUsername($emp_id,$username);
+            if(!$check){
+                $update = $this->employee_model->updateUsername($emp_id,$username);
+                if($update == true){
+                    $result["message"] = "Successfully updated username.";
+                    $result["success"] = true;
+                }else{
+                    $result["message"] = "No changes detected";
+                }
+            }else{
+                $result["message"] = "Username is already taken.";
+            }
+        }else{
+            $result["message"] = "Please insert username.";
+        }
+        echo json_encode($result);
+    }
+
+    public function updateStatus(){
+        $result            = array();
+        $result["message"] = "Error occured. Please contact system admin.";
+        $result["success"] = false;
+        $emp_id            = $_POST["emp_id"];
+        $status            = $_POST["status"];
+        if(!empty($emp_id)){
+            $status = $status == 'inactive' ? 1 : 0;
+            $update = $this->employee_model->updateStatus($emp_id,$status);
+            if($update){
+                $result["message"] = "Successfully updated status.";
+                $result["success"] = true;
+            }
+        }
+        echo json_encode($result);
+    }
 }

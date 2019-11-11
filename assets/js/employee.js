@@ -187,4 +187,119 @@ $(document).ready(function() {
 
         console.log(data); return false;
     });
+
+    $("#btn-new-pw-show").on("click",function(){
+        $("#new-password").prop("type","text")
+        $(this).addClass('hide')
+        $("#btn-new-pw-hide").removeClass("hide")
+    })
+    $("#btn-new-pw-hide").on("click",function(){
+        $("#new-password").prop("type","password")
+        $(this).addClass('hide')
+        $("#btn-new-pw-show").removeClass("hide")
+    })
+
+    
+    $("#btn-curr-pw-show").on("click",function(){
+        $("#curr-password").prop("type","text")
+        $(this).addClass('hide')
+        $("#btn-curr-pw-hide").removeClass("hide")
+    })
+
+    $("#btn-curr-pw-hide").on("click",function(){
+        $("#curr-password").prop("type","password")
+        $(this).addClass('hide')
+        $("#btn-curr-pw-show").removeClass("hide")
+    })
+
+    $(".update-password").on("click",function(){
+        new_pass    = $('#new-password').val().trim()
+        curr_pass   = $('#curr-password').val().trim()
+        tm_hr_token = $(".token").val()
+        emp_id      = $("#emp-id").val()
+
+        $("#message").text('')
+        $(this).button('loading')
+        if(new_pass.length > 0){
+            $.ajax({
+                url:"updatePassword",
+                type:"POST",
+                data: {new_pass,curr_pass,tm_hr_token,emp_id},
+                success:function(data){
+                    res = JSON.parse(data)
+                    $(".update-password").button('reset')
+                    if(res.success){
+                        alertify.alert("Success <i class='fa fa-check text-success'></i>",res.message,function(){
+                            $("#update-password").modal('hide')
+                            $('#new-password').val('')
+                            $('#curr-password').val('')
+                            $("#message").text('')
+                        })
+                    }else{
+                        $("#message").text(res.message)
+                    }
+                }
+            })
+        }else{
+            $(this).button('reset')
+            $("#message").text("Please provide new password.")
+        }
+    })
+
+    $(".edit-user").on("click",function(){
+        $("#username,.edit-user").addClass("hide")
+        $(".edit-user-confirm,.edit-user-cancel,#inp-username").removeClass("hide")
+    })
+    $(".edit-user-cancel").on("click",function(){
+        $(".edit-user-confirm,.edit-user-cancel,#inp-username").addClass("hide")
+        $("#username,.edit-user").removeClass("hide")
+    })
+
+    $(".edit-user-confirm").on("click",function(){
+        username    = $("#inp-username").val()
+        emp_id      = $("#emp-id").val()
+        tm_hr_token = $(".token").val()
+        if(username.length > 0){
+            $.ajax({
+                url:"updateUsername",
+                type:"POST",
+                data:{username,emp_id,tm_hr_token},
+                success:function(data){
+                    res = JSON.parse(data)
+                    if(res.success){
+                        alertify.success(res.message)
+                        $(".edit-user-confirm,.edit-user-cancel,#inp-username").addClass("hide")
+                        $("#username,.edit-user").removeClass("hide")
+                        $("#username").text(username)
+                    }else{
+                        alertify.error(res.message)
+                    }
+                }
+            })
+        }else{
+            alertify.error("Please insert username.")
+        }
+    })
+
+    $("input[name=emp-status]").on("change",function(){
+        status      = $("input[name = 'emp-status']:checked").val() == 1 ? "inactive" : 'active'
+        emp_id      = $("#emp-id").val()
+        tm_hr_token = $(".token").val()
+        if(status.length > 0){
+            $.ajax({
+                url:"updateStatus",
+                type:"POST",
+                data:{status,emp_id,tm_hr_token},
+                success: function(data){
+                    res = JSON.parse(data)
+                    if(res.success){
+                        alertify.success(res.message)
+                    }
+                }
+            })
+        }else{
+            alertify.error("Please select status.")
+        }        
+    })
+
 });

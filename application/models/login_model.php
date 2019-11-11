@@ -19,9 +19,7 @@ class login_model extends CI_Model {
                     WHERE username = '{$username}'
                     AND password = MD5('{$password}')
                    ";
-
             $exe = $this->db->query($sql)->row_array();
-
             if(!empty($exe)) {
                 $result = $exe;
             }

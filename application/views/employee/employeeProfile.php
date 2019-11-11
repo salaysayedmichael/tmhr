@@ -34,7 +34,6 @@
                                 <div class='pull-right'>
                                     <i class="fas fa-user-edit light-orange update-employee-profile"></i>
                                 </div>
-
                                 <h4 class="blue">
                                     <span class="middle"><?php echo ucwords($employee_details["last_name"] . ", " . $employee_details["first_name"]);?></span>
                                 </h4>
@@ -152,11 +151,45 @@
                                         <div class="profile-info-name"> Username </div>
 
                                         <div class="profile-info-value">
+                                            <input class="token" type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>" />
                                             <i class="fa fa-user light-orange bigger-110"></i>
-                                            <span><?php echo $employee_details["username"];?></span>
+                                            <span id="username"><?php echo $employee_details["username"];?> </span>
+                                            <input class="form-control hide" id="inp-username" style="width:20%;display:inline">
+                                            <button class="btn btn-default edit-user">Update Username</button>
+                                            <button class="btn btn-default edit-user-confirm hide"><span class="fa fa-check text-green"></span></button>
+                                            <button class="btn btn-default edit-user-cancel hide"><span class="fa fa-times text-danger"></span></button>
                                         </div>
                                     </div>
 
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Password </div>
+
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-key light-orange bigger-110"></i>
+                                            <button class="btn btn-default" data-toggle="modal" data-target="#update-password">Update Password</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Status </div>
+
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-edit light-orange bigger-110"></i>
+                                            <?php if($employee_details["deleted"]):?>
+                                            <input class="uniform" type="radio" name="emp-status" value="0">
+                                            <span>Active</span>
+                                            &nbsp;
+                                            <input class="uniform" type="radio" name="emp-status" value="1" checked>
+                                            <span>Inactive</span>
+                                            <?php else:?>
+                                            <input class="uniform" type="radio" name="emp-status" value="0" checked>
+                                            <span>Active</span>
+                                            &nbsp;
+                                            <input class="uniform" type="radio" name="emp-status" value="1">
+                                            <span>Inactive</span>
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
                                     </div>
 
                                     <div class="hr hr-8 dotted"></div>
@@ -376,4 +409,50 @@
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
+</div>
+
+<div id="update-password" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Password</h4>
+            </div>
+            <div class="modal-body">
+                <input class="token" type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>" />
+                <input id="emp-id" type="hidden" value="<?php echo $employee_details['employee_id']?>">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <label>New Password</label>
+                            <input type="password" class="form-control" id="new-password">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" id="btn-new-pw-show" type="button" style="margin-top:62%"><span class="fa fa-eye"></span></button>
+                            <button class="btn btn-default hide" id="btn-new-pw-hide" type="button" style="margin-top:62%"><span class="fa fa-eye-slash"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-control" id="curr-password">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" id="btn-curr-pw-show" type="button" style="margin-top:62%"><span class="fa fa-eye"></span></button>
+                            <button class="btn btn-default hide" id="btn-curr-pw-hide" type="button" style="margin-top:62%"><span class="fa fa-eye-slash"></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p id="message" class="text-center text-danger"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary update-password">Update Password</button>
+            </div>
+        </div>
+
+    </div>
 </div>

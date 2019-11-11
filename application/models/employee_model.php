@@ -345,12 +345,49 @@ class Employee_model extends CI_Model {
             $this->db->query($sql);
 
             $affected_rows = $this->db->affected_rows();
-
-            if(count($affected_rows) > 0) {
+            if($affected_rows) {
                 $result = true;
             }
         }
 
+        return $result;
+    }
+
+    public function checkUsername($user_id, $username){
+        $result = false;
+        if(!empty($user_id) && !empty($username)){
+            $sql = "SELECT * FROM users WHERE username = ? AND user_id <> ?";
+            $exe = $exe = $this->db->query($sql,array($username,$user_id))->result_array();
+            if($exe){
+                $result = true;
+            }
+        }
+        return $result;
+    }
+
+    public function updateUsername($user_id, $username){
+        $result = false;
+        if(!empty($user_id) && !empty($username)){
+            $sql      = "UPDATE users SET username = ? WHERE user_id = ?";
+            $exe      = $this->db->query($sql, array($username,$user_id));
+            $affected = $this->db->affected_rows();
+            if($affected){
+                $result = true;
+            }
+        }
+        return $result;
+    }
+
+    public function updateStatus($emp_id, $status){
+        $result = false;
+        if(!empty($emp_id)){
+            $sql      = "UPDATE users SET deleted = $status WHERE user_id = $emp_id";
+            $exe      = $this->db->query($sql);
+            $affected = $this->db->affected_rows();
+            if($affected){
+                $result = true;
+            }
+        }
         return $result;
     }
 }
