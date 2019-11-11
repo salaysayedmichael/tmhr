@@ -398,6 +398,33 @@ $(document).ready(function() {
             }
         });
     });
+
+    $("body").on("click",".delete-eval",function(){
+        self        = $(this)
+        id          = $(this).attr("id")
+        tm_hr_token = $(this).attr("data-csrf-token")
+        if(id.length > 0){
+            alertify.confirm("Delete <i class='fa fa-trash text-danger'></i>","Delete this evaluation?",function(){
+                $.ajax({
+                    url:"/tmhr/index.php/evaluation/updateStatus",
+                    type:"POST",
+                    data:{id,tm_hr_token},
+                    success:function(data){
+                        res = JSON.parse(data)
+                        if(res.success){
+                            alertify.success(res.message)
+                            self.closest("tr").addClass("hide")
+                        }else{
+                            alertify.error(res.message)
+                        }
+                    }
+                })
+            },function(){
+                alertify.error('Cancel')
+            })
+
+        }
+    })
 });
 
 $("body").on("change", ".sel-filter-user", function() {
@@ -504,4 +531,5 @@ $("body").on("change", "#sel-emp-head", function() {
         $("#sel-employees").prop("disabled", true);
     }
 });
+
 

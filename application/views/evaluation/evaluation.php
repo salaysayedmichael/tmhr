@@ -104,6 +104,7 @@
                                                             <th>Score</th>
                                                             <th>Evaluation Detail</th>
                                                             <th>Expiry Date</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -119,7 +120,14 @@
                                                             <td class="text-center">
                                                                 <a class="btn btn-default <?php echo (!empty($eval["score"])) ? 'btn-finish-eval' : '';?>" <?php echo (!empty($eval["score"])) ? '' : 'disabled';?> data-csrf-token="<?php echo $this->security->get_csrf_hash();?>">View Result</a>
                                                             </td>
-                                                            <td class="text-red text-right"><?php echo $eval["expiry_date"];?></td>
+                                                            <td class="text-red text-center"><?php echo $eval["expiry_date"];?></td>
+                                                            <td class="text-center">
+                                                                <?php if($eval["status_words"] == "Ongoing"):?>
+                                                                    <a class="btn btn-danger delete-eval" id="<?php echo $eval['id']?>" data-csrf-token="<?php echo $this->security->get_csrf_hash();?>"><i class="fa fa-trash"></i></a>
+                                                                <?php else: ?>
+                                                                    <a class="btn btn-danger" disabled><i class="fa fa-trash"></i></a>
+                                                                <?php endif;?>
+                                                            </td>
                                                         </tr>
                                                             <?php endforeach;?>
                                                         <?php endif;?>

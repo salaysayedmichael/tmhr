@@ -962,4 +962,17 @@ class Evaluation_model extends CI_Model {
 
         return $result;
     }
+
+    public function updateStatus($id){
+        $result = false;
+        if(!empty($id)){
+            $sql = "UPDATE evaluation_list SET deleted = 1 WHERE id = ? ";
+            $exe = $this->db->query($sql, array($id));
+            $aff = $this->db->affected_rows();
+            if($aff){
+                $result = true;
+            }
+        }
+        return $result;
+    }
 }

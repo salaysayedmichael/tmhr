@@ -582,4 +582,19 @@ class Evaluation extends MY_Controller {
 
         echo json_encode($result);
     }
+
+    public function updateStatus(){
+        $result            = array();
+        $result["message"] = "Error occured. Please contact system admin.";
+        $result["success"] = false;
+        $id                = $_POST["id"];
+        if(!empty($id)){
+            $update = $this->evaluation_model->updateStatus($id);
+            if($update){
+                $result["message"] = "Successfully deleted evaluation.";
+                $result["success"] = true;
+            }
+        }
+        echo json_encode($result);
+    }
 }
