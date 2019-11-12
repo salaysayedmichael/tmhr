@@ -133,7 +133,7 @@ class Employee_model extends CI_Model {
 
             $exe = $this->db->query($sql)->row_array();
 
-            if(count($exe) == 0) {
+            if(!$exe) {
                 $result = false;
             }
         }
@@ -155,7 +155,7 @@ class Employee_model extends CI_Model {
 
             $exe = $this->db->query($sql)->row_array();
 
-            if(count($exe) == 0) {
+            if(!$exe) {
                 $result = false;
             }
         }
@@ -222,20 +222,43 @@ class Employee_model extends CI_Model {
     public function getEmployees() {
         $result = array();
 
-        $sql = "SELECT
-                    employee_id,
-                    username,
-                    last_name,
-                    first_name,
-                    middle_name
-                FROM users
-                INNER JOIN employee
-                ON employee.employee_id = users.user_id
-                WHERE users.deleted = 0
-                AND employee.deleted = 0
-                AND type != 'administrator'
-                ORDER BY last_name, first_name ASC
-               ";
+        $sql = "SELECT 
+        e.employee_id,
+        u.username,
+        e.last_name,
+        e.first_name,
+        e.middle_name,
+        d.department_title,
+        (SELECT 
+                field_value
+            FROM
+                employment_information ei
+            WHERE
+                ei.field_name = 'employment_status'
+                    AND e.employee_id = ei.employee_id) AS status,
+        (SELECT 
+                p.position_title
+            FROM
+                positions p 
+                LEFT JOIN 
+                employment_information ei ON p.position_id = ei.field_value
+            WHERE
+                ei.field_name = 'position'
+                    AND e.employee_id = ei.employee_id) AS position,
+        e.deleted
+    FROM
+        employee e
+            LEFT JOIN
+        employment_information ei ON e.employee_id = ei.employee_id
+            INNER JOIN
+        departments d ON d.department_id = ei.field_value
+            INNER JOIN
+        users u ON u.user_id = e.employee_id
+    WHERE
+        ei.field_name = 'department'
+            AND u.type <> 'administrator'
+            AND u.deleted = 0
+            ORDER BY e.last_name,e.first_name;";
 
         $exe = $this->db->query($sql)->result_array();
 
@@ -250,7 +273,7 @@ class Employee_model extends CI_Model {
         $result  = array();
 
         if(!empty($user_id)) {
-            $sql = "SELECT * FROM employee
+            $sql = "SELECT *,employee.deleted as del FROM employee
                     INNER JOIN users
                     ON employee.employee_id = users.user_id
                     WHERE employee_id = {$user_id}
@@ -381,7 +404,7 @@ class Employee_model extends CI_Model {
     public function updateStatus($emp_id, $status){
         $result = false;
         if(!empty($emp_id)){
-            $sql      = "UPDATE users SET deleted = $status WHERE user_id = $emp_id";
+            $sql      = "UPDATE employee SET deleted = $status WHERE employee_id = $emp_id";
             $exe      = $this->db->query($sql);
             $affected = $this->db->affected_rows();
             if($affected){

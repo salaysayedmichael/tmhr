@@ -172,10 +172,9 @@
 
                                     <div class="profile-info-row">
                                         <div class="profile-info-name"> Status </div>
-
                                         <div class="profile-info-value">
                                             <i class="fa fa-edit light-orange bigger-110"></i>
-                                            <?php if($employee_details["deleted"]):?>
+                                            <?php if($employee_details["del"]):?>
                                             <input class="uniform" type="radio" name="emp-status" value="0">
                                             <span>Active</span>
                                             &nbsp;

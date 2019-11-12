@@ -25,7 +25,10 @@
                                         <!--<th>Employee ID</th>-->
                                         <th>Last Name</th>
                                         <th>First Name</th>
-                                        <th>Middle Name</th>
+                                        <th>Department</th>
+                                        <th>Position</th>
+                                        <th>Employment Status</th>
+                                        <th>Active</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,7 +39,10 @@
                                         <!--<td><?php echo $employee["employee_id"];?></td>-->
                                         <td><?php echo ucfirst($employee["last_name"]);?></td>
                                         <td><?php echo ucfirst($employee["first_name"]);?></td>
-                                        <td><?php echo ucfirst($employee["middle_name"]);?></td>
+                                        <td><?php echo ucfirst($employee["department_title"]);?></td>
+                                        <td><?php echo ucfirst($employee["position"]);?></td>
+                                        <td><?php echo ucfirst($employee["status"]);?></td>
+                                        <td><i class="fa <?php echo $employee['deleted'] ? 'fa-times-circle text-danger' : 'fa-check-circle text-success'?>"></i></td>
                                     </tr>
                                         <?php endforeach;?>
                                     <?php else :?>

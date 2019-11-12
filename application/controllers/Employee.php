@@ -67,7 +67,6 @@ class Employee extends MY_Controller {
                         $employee_data["employee_id"] = $user_id;
                         $employee_id                  = $this->employee_model->insertEmployee($employee_data, $user_id); //insert to employee table
                         $employment_info              = $this->employee_model->prepareEmployeeInformation($employment_info, $user_id);
-
                         if($employee_id > 0) {
                             $emp_info_id = $this->employee_model->insertEmployeeInformation($employment_info); //insert to employment information
 
