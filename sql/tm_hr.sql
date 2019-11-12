@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 06, 2019 at 02:02 PM
--- Server version: 10.1.32-MariaDB
--- PHP Version: 7.2.5
+-- Host: 127.0.0.1:3306
+-- Generation Time: Nov 12, 2019 at 01:48 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,12 +28,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `departments`
 --
 
-CREATE TABLE `departments` (
-  `department_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `departments`;
+CREATE TABLE IF NOT EXISTS `departments` (
+  `department_id` int(11) NOT NULL AUTO_INCREMENT,
   `department_title` varchar(100) NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
-  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`department_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `departments`
@@ -57,13 +59,15 @@ INSERT INTO `departments` (`department_id`, `department_title`, `deleted`, `date
 -- Table structure for table `department_tree`
 --
 
-CREATE TABLE `department_tree` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `department_tree`;
+CREATE TABLE IF NOT EXISTS `department_tree` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `head` int(11) NOT NULL DEFAULT '0',
   `employee_id` int(11) DEFAULT '0',
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `department_tree`
@@ -275,8 +279,9 @@ INSERT INTO `department_tree` (`id`, `head`, `employee_id`, `date_added`, `delet
 -- Table structure for table `employee`
 --
 
-CREATE TABLE `employee` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE IF NOT EXISTS `employee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) NOT NULL,
   `last_name` varchar(500) NOT NULL,
   `first_name` varchar(500) NOT NULL,
@@ -290,22 +295,24 @@ CREATE TABLE `employee` (
   `sss_number` varchar(100) DEFAULT NULL,
   `hdmf_number` varchar(100) DEFAULT NULL,
   `philhealth_number` varchar(100) DEFAULT NULL,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=141 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `employee`
 --
 
 INSERT INTO `employee` (`id`, `employee_id`, `last_name`, `first_name`, `middle_name`, `birth_date`, `gender`, `address`, `phone_number`, `email_address`, `bank_account_number`, `sss_number`, `hdmf_number`, `philhealth_number`, `deleted`) VALUES
-(53, 78, 'berenguel', 'mae', 'l', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(33, 1, 'administrator', 'administrator', 'administrator', '1988-08-04 16:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(59, 84, 'cuerda', 'renemae', 'm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(58, 83, 'achache', 'patrick', '', '2018-09-04 16:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(57, 82, 'tabañag', 'hazel', 'f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(56, 81, 'arnaiz', 'jessica', 'g', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(55, 80, 'teopiz', 'rosanne lorell', 'd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(54, 79, 'nabong', 'maxim dominique', 'a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
+(53, 78, 'berenguel', 'mae', 'l', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(33, 1, 'administrator', 'administrator', 'administrator', '1988-08-04 16:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(59, 84, 'cuerda', 'renemae', 'm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(58, 83, 'achache', 'patrick', '', '2018-09-04 16:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(57, 82, 'tabañag', 'hazel', 'f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(56, 81, 'arnaiz', 'jessica', 'g', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(55, 80, 'teopiz', 'rosanne lorell', 'd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(54, 79, 'nabong', 'maxim dominique', 'a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
 (50, 75, 'gonzales', 'matt', 'g', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
 (51, 76, 'biera', 'joenaniña', 'o', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
 (52, 77, 'tuastuman', 'mae lizza', 'j', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
@@ -385,10 +392,64 @@ INSERT INTO `employee` (`id`, `employee_id`, `last_name`, `first_name`, `middle_
 (130, 155, 'campesao', 'charlotte', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
 (131, 156, 'olivo', 'kimberly', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
 (132, 157, 'repollo', 'charmayne', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(133, 158, 'boaquin', 'verner', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(134, 159, 'papellero', 'christhel', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(135, 160, 'cuizon', 'gerlie gay', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(136, 161, 'requinto', 'evangeline', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+(133, 158, 'boaquin', 'verner', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(134, 159, 'papellero', 'christhel', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(135, 160, 'cuizon', 'gerlie gay', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(136, 161, 'requinto', 'evangeline', ' ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(138, 163, 'asdfadsfasd', 'fdasfads', 'fasdfasdfsdaf', '0000-00-00 00:00:00', 'Male', 'fdasfdsaf', '213213', 'dsfsdfsadfs@fdsafasdf.gfdsgdsfg', 'dsfsdfsdf', 'sdafdsaf', 'adsfasdfsda', 'dsfdsafdsf', 0),
+(139, 164, 'asdfadsfasdfdfdf', 'fdasfadsfdfdf', 'fasdfasdfsdafdfdf', '0000-00-00 00:00:00', 'Male', 'fdasfdsaf', '213213', 'dsfsdfsadfs@fdsafasdf.gfdsgdsfg', 'dsfsdfsdf', 'sdafdsaf', 'adsfasdfsda', 'dsfdsafdsf', 0),
+(140, 165, 'asdfadsfasdfdfdfdfdffd', 'fdasfadsfdfdffdfd', 'fasdfasdfsdafdfdffdfdf', '0000-00-00 00:00:00', 'Male', 'fdasfdsaf', '213213', 'dsfsdfsadfs@fdsafasdf.gfdsgdsfg', 'dsfsdfsdf', 'sdafdsaf', 'adsfasdfsda', 'dsfdsafdsf', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+CREATE TABLE IF NOT EXISTS `employees` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(500) NOT NULL,
+  `middle_name` varchar(500) NOT NULL,
+  `last_name` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`id`, `first_name`, `middle_name`, `last_name`) VALUES
+(1, 'job', 'c', 'salas'),
+(2, 'joe', 'j', 'labajo');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_details`
+--
+
+DROP TABLE IF EXISTS `employee_details`;
+CREATE TABLE IF NOT EXISTS `employee_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL,
+  `field` varchar(500) NOT NULL,
+  `value` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee_details`
+--
+
+INSERT INTO `employee_details` (`id`, `employee_id`, `field`, `value`) VALUES
+(1, 1, 'contact_number', '123456'),
+(2, 1, 'email', 'jcs@gmail.com'),
+(3, 1, 'address', 'toledo city'),
+(4, 1, 'address', 'toledo city'),
+(5, 1, 'marital_status', 'married'),
+(6, 2, 'address', 'tisa, labangon'),
+(7, 2, 'marital_status', 'it\'s complicated');
 
 -- --------------------------------------------------------
 
@@ -396,7 +457,8 @@ INSERT INTO `employee` (`id`, `employee_id`, `last_name`, `first_name`, `middle_
 -- Table structure for table `employee_shift`
 --
 
-CREATE TABLE `employee_shift` (
+DROP TABLE IF EXISTS `employee_shift`;
+CREATE TABLE IF NOT EXISTS `employee_shift` (
   `id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
   `shift_code` int(11) NOT NULL,
@@ -420,15 +482,17 @@ INSERT INTO `employee_shift` (`id`, `employee_id`, `shift_code`, `shift_details`
 -- Table structure for table `employment_information`
 --
 
-CREATE TABLE `employment_information` (
-  `empinfo_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `employment_information`;
+CREATE TABLE IF NOT EXISTS `employment_information` (
+  `empinfo_id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) NOT NULL,
   `field_name` varchar(500) NOT NULL,
   `field_value` varchar(1000) NOT NULL,
   `effectivity_date` date NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`empinfo_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `employment_information`
@@ -571,7 +635,15 @@ INSERT INTO `employment_information` (`empinfo_id`, `employee_id`, `field_name`,
 (135, 75, 'type', 'Department Head', '2018-09-04', '2018-09-04 08:19:59', 0),
 (136, 85, 'type', 'Department Head', '2018-09-04', '2018-09-04 08:19:59', 0),
 (137, 86, 'type', 'Department Head', '2018-09-04', '2018-09-04 08:19:59', 0),
-(138, 93, 'type', 'Department Head', '2018-09-04', '2018-09-04 08:19:59', 0);
+(138, 93, 'type', 'Department Head', '2018-09-04', '2018-09-04 08:19:59', 0),
+(139, 165, 'date_hired', '11/12/2019', '2019-11-12', '2019-11-12 12:19:27', 0),
+(140, 165, 'position', '3', '2019-11-12', '2019-11-12 12:19:27', 0),
+(141, 165, 'level', 'employee', '2019-11-12', '2019-11-12 12:19:27', 0),
+(142, 165, 'department', '5', '2019-11-12', '2019-11-12 12:19:27', 0),
+(143, 165, 'employment_status', 'Probationary', '2019-11-12', '2019-11-12 12:19:27', 0),
+(144, 165, 'positionfd', '1', '2019-11-12', '2019-11-12 12:19:27', 0),
+(145, 165, 'salary', '200000', '2019-11-12', '2019-11-12 12:19:27', 0),
+(222, 73, 'employment_status', 'Regular', '2019-11-12', '2019-11-12 12:34:21', 0);
 
 -- --------------------------------------------------------
 
@@ -579,14 +651,16 @@ INSERT INTO `employment_information` (`empinfo_id`, `employee_id`, `field_name`,
 -- Table structure for table `evaluation`
 --
 
-CREATE TABLE `evaluation` (
-  `evaluation_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation`;
+CREATE TABLE IF NOT EXISTS `evaluation` (
+  `evaluation_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) NOT NULL DEFAULT '0',
   `position` int(11) NOT NULL DEFAULT '0',
   `rating` varchar(100) NOT NULL,
   `rating_value` decimal(10,0) NOT NULL,
-  `comment` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `comment` text NOT NULL,
+  PRIMARY KEY (`evaluation_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `evaluation`
@@ -645,12 +719,14 @@ INSERT INTO `evaluation` (`evaluation_id`, `attribute_id`, `position`, `rating`,
 -- Table structure for table `evaluation_attribute`
 --
 
-CREATE TABLE `evaluation_attribute` (
-  `attr_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation_attribute`;
+CREATE TABLE IF NOT EXISTS `evaluation_attribute` (
+  `attr_id` int(11) NOT NULL AUTO_INCREMENT,
   `attr_title` varchar(500) NOT NULL,
   `position` int(11) NOT NULL,
-  `attr_comment` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `attr_comment` text NOT NULL,
+  PRIMARY KEY (`attr_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `evaluation_attribute`
@@ -673,14 +749,16 @@ INSERT INTO `evaluation_attribute` (`attr_id`, `attr_title`, `position`, `attr_c
 -- Table structure for table `evaluation_general`
 --
 
-CREATE TABLE `evaluation_general` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation_general`;
+CREATE TABLE IF NOT EXISTS `evaluation_general` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `el_id` int(11) NOT NULL,
   `column` varchar(100) NOT NULL,
   `value` text NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `evaluation_general`
@@ -714,8 +792,9 @@ INSERT INTO `evaluation_general` (`id`, `el_id`, `column`, `value`, `date_added`
 -- Table structure for table `evaluation_list`
 --
 
-CREATE TABLE `evaluation_list` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation_list`;
+CREATE TABLE IF NOT EXISTS `evaluation_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `department` int(11) NOT NULL DEFAULT '0',
   `evaluator` int(11) DEFAULT '0',
   `evaluated` int(11) NOT NULL DEFAULT '0',
@@ -726,8 +805,9 @@ CREATE TABLE `evaluation_list` (
   `overall_recommendation` text,
   `overall_comment` text,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` smallint(6) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` smallint(6) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `evaluation_list`
@@ -745,7 +825,8 @@ INSERT INTO `evaluation_list` (`id`, `department`, `evaluator`, `evaluated`, `st
 (10, 5, 76, 93, 1, NULL, 'Department Head To Employee', '', NULL, NULL, '2018-11-28 02:50:33', 0),
 (11, 5, 76, 117, 1, NULL, 'Department Head To Employee', '', NULL, NULL, '2018-11-29 04:08:00', 0),
 (12, 5, 76, 119, 1, NULL, 'Department Head To Employee', '', NULL, NULL, '2018-11-29 04:08:10', 0),
-(13, 5, 76, 149, 1, NULL, 'Department Head To Employee', '', NULL, NULL, '2018-12-21 10:34:24', 0);
+(13, 5, 76, 149, 1, NULL, 'Department Head To Employee', '', NULL, NULL, '2018-12-21 10:34:24', 0),
+(14, 7, 162, 131, 0, '2019-11-15', 'Department Head To Employee', 'regularization', NULL, NULL, '2019-11-11 20:54:04', 1);
 
 -- --------------------------------------------------------
 
@@ -753,15 +834,17 @@ INSERT INTO `evaluation_list` (`id`, `department`, `evaluator`, `evaluated`, `st
 -- Table structure for table `evaluation_result`
 --
 
-CREATE TABLE `evaluation_result` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation_result`;
+CREATE TABLE IF NOT EXISTS `evaluation_result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `evaluation_list_id` int(11) NOT NULL,
   `evaluation_id` int(11) NOT NULL,
   `evaluator_comments` text,
   `evaluator_recommendations` text,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `evaluation_result`
@@ -883,14 +966,16 @@ INSERT INTO `evaluation_result` (`id`, `evaluation_list_id`, `evaluation_id`, `e
 -- Table structure for table `nop`
 --
 
-CREATE TABLE `nop` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `nop`;
+CREATE TABLE IF NOT EXISTS `nop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) NOT NULL DEFAULT '0',
   `reason` text NOT NULL,
   `recommended_by` int(11) NOT NULL DEFAULT '0',
   `submission_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -899,8 +984,9 @@ CREATE TABLE `nop` (
 -- Table structure for table `nte`
 --
 
-CREATE TABLE `nte` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `nte`;
+CREATE TABLE IF NOT EXISTS `nte` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) NOT NULL,
   `manager` int(11) NOT NULL,
   `category` varchar(100) DEFAULT NULL,
@@ -915,8 +1001,10 @@ CREATE TABLE `nte` (
   `date_incurred` timestamp NULL DEFAULT NULL,
   `infraction_place` varchar(1000) DEFAULT NULL,
   `date_added` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id_idx` (`employee_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `nte`
@@ -934,12 +1022,14 @@ INSERT INTO `nte` (`id`, `employee_id`, `manager`, `category`, `level`, `occuren
 -- Table structure for table `positions`
 --
 
-CREATE TABLE `positions` (
-  `position_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `positions`;
+CREATE TABLE IF NOT EXISTS `positions` (
+  `position_id` int(11) NOT NULL AUTO_INCREMENT,
   `position_title` varchar(100) NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
-  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`position_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `positions`
@@ -949,7 +1039,16 @@ INSERT INTO `positions` (`position_id`, `position_title`, `deleted`, `date_added
 (1, 'researcher', 0, '2018-08-08 10:21:56'),
 (2, 'quality assurance', 0, '2018-08-08 10:21:56'),
 (3, 'developer', 0, '2018-08-15 04:22:00'),
-(4, 'staff', 0, '2018-08-15 04:22:09');
+(4, 'staff', 0, '2018-08-15 04:22:09'),
+(5, 'Campaign Lead', 0, '2019-11-12 13:47:22'),
+(6, 'Senior Researcher', 0, '2019-11-12 13:47:22'),
+(7, 'Senior QA', 0, '2019-11-12 13:47:22'),
+(8, 'Software Tester', 0, '2019-11-12 13:47:22'),
+(9, 'Designer', 0, '2019-11-12 13:47:22'),
+(10, 'IT Support', 0, '2019-11-12 13:47:22'),
+(11, 'Movie Verifier', 0, '2019-11-12 13:47:22'),
+(12, 'Assistant', 0, '2019-11-12 13:47:22'),
+(13, 'OJT', 0, '2019-11-12 13:47:22');
 
 -- --------------------------------------------------------
 
@@ -957,11 +1056,13 @@ INSERT INTO `positions` (`position_id`, `position_title`, `deleted`, `date_added
 -- Table structure for table `shift_info`
 --
 
-CREATE TABLE `shift_info` (
+DROP TABLE IF EXISTS `shift_info`;
+CREATE TABLE IF NOT EXISTS `shift_info` (
   `shift_code` int(11) NOT NULL,
   `shift_desc` varchar(100) NOT NULL,
   `shift_in` time(6) NOT NULL,
-  `shift_out` time(6) NOT NULL
+  `shift_out` time(6) NOT NULL,
+  PRIMARY KEY (`shift_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -977,14 +1078,16 @@ INSERT INTO `shift_info` (`shift_code`, `shift_desc`, `shift_in`, `shift_out`) V
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `password` varchar(1000) NOT NULL,
   `type` varchar(100) NOT NULL DEFAULT 'employee',
   `deleted` int(11) NOT NULL DEFAULT '0',
-  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -1002,7 +1105,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (75, 'mgonzales', 'd0aca842154427b7f037c9c76c4e3641', 'employee', 0, '2018-09-04 07:17:01'),
 (73, 'cparadela', '7b9b86528504ff94c87bfdc2b139de23', 'employee', 0, '2018-09-04 07:17:01'),
 (74, 'mtanga-an', '42ae8f16164fff3d40b6efaea419acec', 'employee', 0, '2018-09-04 07:17:01'),
-(83, 'pachache ', '53bc492d98a1ce0663e13bafa62dcb75', 'employee', 0, '2018-09-04 07:17:01'),
+(83, 'pachache ', '53bc492d98a1ce0663e13bafa62dcb75', 'employee', 1, '2018-09-04 07:17:01'),
 (84, 'rcuerda', 'ab58ff426a428158544c527c6df86512', 'employee', 0, '2018-09-04 07:17:01'),
 (85, 'jhermosisima ', 'ea7aa97e48b96a8a8d0127a98a0e63d0', 'employee', 0, '2018-09-04 07:17:01'),
 (86, 'eapostol ', '0d0244509f848be5a23db84dfa082e07', 'employee', 0, '2018-09-04 07:17:01'),
@@ -1039,7 +1142,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (117, 'jsalas', '385ae5a7dfd8d4ac4597e9016fe625e7', 'employee', 0, '2018-09-04 07:17:01'),
 (118, 'dortega', 'd25cd29afb000d17e63abd3196e520bf', 'employee', 0, '2018-09-04 07:17:01'),
 (119, 'cangot', '572ac2019ebda4d6915e4d1099f5e5a0', 'employee', 0, '2018-09-04 07:17:01'),
-(120, 'calama', '7cd44357355573b31eed49c04f2dd80c', 'employee', 0, '2018-09-04 07:17:01'),
+(120, 'calama', '7cd44357355573b31eed49c04f2dd80c', 'employee', 1, '2018-09-04 07:17:01'),
 (121, 'cbacus', 'fa809ace9a9e5d8da798226c1d5ee4ba', 'employee', 0, '2018-09-04 07:17:01'),
 (122, 'sramirez ', '8db0f64c94abe69672c0781893f73cab', 'employee', 0, '2018-09-04 07:17:01'),
 (123, 'mcerelegia', '5a1a186debc85b6d7c7d164e5bcfade1', 'employee', 0, '2018-09-04 07:17:01'),
@@ -1052,7 +1155,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (130, 'rromaguera', 'bd3dbf5f1ee76f5afdb48d567df18d74', 'employee', 0, '2018-09-04 07:17:01'),
 (131, 'jlabajo', '21d95e18afb28aa084685fcc38c96f62', 'employee', 0, '2018-09-04 07:17:01'),
 (132, 'lalmonia ', 'd227b9824af23141d54dc9d731382122', 'employee', 0, '2018-09-04 07:17:01'),
-(133, 'ialchivar', '1a7d227966d0a22a45518c04760e23d5', 'employee', 0, '2018-09-04 07:17:01'),
+(133, 'ialchivar', '1a7d227966d0a22a45518c04760e23d5', 'employee', 1, '2018-09-04 07:17:01'),
 (134, 'aaro', 'ae58799a740892bbfc9a6d81e696e527', 'employee', 0, '2018-10-18 07:27:56'),
 (135, 'rbaguid', '37449fbddac13cbecbe4efff57cd0075', 'employee', 0, '2018-10-18 07:29:27'),
 (136, 'cbobier', '50ce3dc681a41df74f0c6e833369b067', 'employee', 0, '2018-10-18 07:30:39'),
@@ -1068,7 +1171,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (146, 'msuerte', '13a97715872e59c7feb13d5c9bbcef96', 'employee', 0, '2018-10-18 07:39:34'),
 (147, 'ttempla', 'f4ed8c036fc577155a12a8e5d95296cc', 'employee', 0, '2018-10-18 07:40:56'),
 (148, 'jservande', '90e0f9db55e540b844dda9a750b7ed28', 'employee', 0, '2018-10-18 07:41:59'),
-(149, 'jomandam', 'c8909feb2b909f1d3629ba54713ac833', 'employee', 0, '2018-10-18 07:43:36'),
+(149, 'jomandam', '2a129551cefc0264158d08ff85cdab62', 'employee', 0, '2018-10-18 07:43:36'),
 (150, 'dgetutua', '7e2416ffa6a4cb14d59be57096da403e', 'employee', 0, '2018-10-18 07:44:20'),
 (151, 'mmelgar', 'c8f728490dbadf587516d9534d79e715', 'employee', 0, '2018-10-18 07:45:08'),
 (152, 'csoroño', '6c458524ff7162de14c3917f99d9b8c8', 'employee', 0, '2018-10-18 07:45:58'),
@@ -1081,179 +1184,10 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (159, 'cpapellero', 'db53a05904b8fa69832a39d3798ed6ca', 'employee', 0, '2018-10-18 07:55:32'),
 (160, 'gcuizon', '12a0522aaf94dc8b553734c497a9eb94', 'employee', 0, '2018-10-18 07:56:21'),
 (161, 'erequinto', 'eb5795611d27cb4759884dc5df7bf39b', 'employee', 0, '2018-10-18 07:57:08'),
-(162, 'bperino', '6b96de29fb0fe9891f5eb430869ca14b', 'employee', 0, '2018-10-18 08:08:54');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `departments`
---
-ALTER TABLE `departments`
-  ADD PRIMARY KEY (`department_id`);
-
---
--- Indexes for table `department_tree`
---
-ALTER TABLE `department_tree`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `employee`
---
-ALTER TABLE `employee`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `employee_id` (`employee_id`) USING BTREE;
-
---
--- Indexes for table `employment_information`
---
-ALTER TABLE `employment_information`
-  ADD PRIMARY KEY (`empinfo_id`);
-
---
--- Indexes for table `evaluation`
---
-ALTER TABLE `evaluation`
-  ADD PRIMARY KEY (`evaluation_id`);
-
---
--- Indexes for table `evaluation_attribute`
---
-ALTER TABLE `evaluation_attribute`
-  ADD PRIMARY KEY (`attr_id`);
-
---
--- Indexes for table `evaluation_general`
---
-ALTER TABLE `evaluation_general`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `evaluation_list`
---
-ALTER TABLE `evaluation_list`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `evaluation_result`
---
-ALTER TABLE `evaluation_result`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `nop`
---
-ALTER TABLE `nop`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `nte`
---
-ALTER TABLE `nte`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `employee_id_idx` (`employee_id`);
-
---
--- Indexes for table `positions`
---
-ALTER TABLE `positions`
-  ADD PRIMARY KEY (`position_id`);
-
---
--- Indexes for table `shift_info`
---
-ALTER TABLE `shift_info`
-  ADD PRIMARY KEY (`shift_code`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `departments`
---
-ALTER TABLE `departments`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `department_tree`
---
-ALTER TABLE `department_tree`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
-
---
--- AUTO_INCREMENT for table `employee`
---
-ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
-
---
--- AUTO_INCREMENT for table `employment_information`
---
-ALTER TABLE `employment_information`
-  MODIFY `empinfo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
-
---
--- AUTO_INCREMENT for table `evaluation`
---
-ALTER TABLE `evaluation`
-  MODIFY `evaluation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
-
---
--- AUTO_INCREMENT for table `evaluation_attribute`
---
-ALTER TABLE `evaluation_attribute`
-  MODIFY `attr_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `evaluation_general`
---
-ALTER TABLE `evaluation_general`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT for table `evaluation_list`
---
-ALTER TABLE `evaluation_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `evaluation_result`
---
-ALTER TABLE `evaluation_result`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
-
---
--- AUTO_INCREMENT for table `nop`
---
-ALTER TABLE `nop`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `nte`
---
-ALTER TABLE `nte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `positions`
---
-ALTER TABLE `positions`
-  MODIFY `position_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
+(162, 'bperino', '6b96de29fb0fe9891f5eb430869ca14b', 'employee', 0, '2018-10-18 08:08:54'),
+(163, 'fasdfadsfasd', '3fdd49ef116fc2a054015a5d8f1da072', 'employee', 0, '2019-11-12 12:15:26'),
+(164, 'fasdfadsfasdfdfdf', '971c118fc630f6de6200766ca50fe14b', 'employee', 0, '2019-11-12 12:18:51'),
+(165, 'fasdfadsfasdfdfdfdfdffd', '8cc3fc987ae6796805924741ea420faf', 'employee', 0, '2019-11-12 12:19:27');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
