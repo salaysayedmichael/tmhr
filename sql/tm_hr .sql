@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 12, 2019 at 01:48 PM
+-- Generation Time: Nov 13, 2019 at 09:43 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -1053,6 +1053,38 @@ INSERT INTO `positions` (`position_id`, `position_title`, `deleted`, `date_added
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shifts`
+--
+
+DROP TABLE IF EXISTS `shifts`;
+CREATE TABLE IF NOT EXISTS `shifts` (
+  `sid` int(11) NOT NULL AUTO_INCREMENT,
+  `shift_name` varchar(50) NOT NULL,
+  `shift_details` varchar(100) NOT NULL,
+  `time_in` time NOT NULL,
+  `time_out` time NOT NULL,
+  `break_in` time DEFAULT NULL,
+  `break_out` time DEFAULT NULL,
+  `deleted` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`sid`),
+  UNIQUE KEY `shift_name` (`shift_name`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shifts`
+--
+
+INSERT INTO `shifts` (`sid`, `shift_name`, `shift_details`, `time_in`, `time_out`, `break_in`, `break_out`, `deleted`) VALUES
+(3, 'Morning', 'Morning', '07:00:00', '16:00:00', NULL, NULL, 0),
+(5, 'Afternoon', '', '16:00:00', '01:00:00', '00:00:00', '00:00:00', 1),
+(6, 'Night', 'Graveyard', '20:00:00', '05:00:00', '00:00:00', '00:00:00', 0),
+(7, 'Swings', '', '17:00:00', '02:00:00', '00:00:00', '00:00:00', 0),
+(8, 'Flex', '', '00:00:00', '08:00:00', '00:00:00', '00:00:00', 1),
+(9, 'Flexible', '', '00:12:00', '08:09:00', NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shift_info`
 --
 
@@ -1171,7 +1203,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `type`, `deleted`, `date
 (146, 'msuerte', '13a97715872e59c7feb13d5c9bbcef96', 'employee', 0, '2018-10-18 07:39:34'),
 (147, 'ttempla', 'f4ed8c036fc577155a12a8e5d95296cc', 'employee', 0, '2018-10-18 07:40:56'),
 (148, 'jservande', '90e0f9db55e540b844dda9a750b7ed28', 'employee', 0, '2018-10-18 07:41:59'),
-(149, 'jomandam', '2a129551cefc0264158d08ff85cdab62', 'employee', 0, '2018-10-18 07:43:36'),
+(149, 'jdomandam', '474851b360c0c7e92bfdbb4f3acf93cf', 'employee', 0, '2018-10-18 07:43:36'),
 (150, 'dgetutua', '7e2416ffa6a4cb14d59be57096da403e', 'employee', 0, '2018-10-18 07:44:20'),
 (151, 'mmelgar', 'c8f728490dbadf587516d9534d79e715', 'employee', 0, '2018-10-18 07:45:08'),
 (152, 'csoroño', '6c458524ff7162de14c3917f99d9b8c8', 'employee', 0, '2018-10-18 07:45:58'),

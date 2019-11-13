@@ -90,7 +90,7 @@
 	 					 );
 	 		if(!empty($data))
 	 		{
-	 			$check_shiftname = $this->settings_model->checkShiftNameDuplication($data['shift_name']);
+	 			$check_shiftname = $this->settings_model->checkShiftNameDuplication($data['shift_name'],$data['id']);
 	 			
 	 			if($check_shiftname)
 	 			{
@@ -98,7 +98,8 @@
 	 			}
 	 			else
 	 			{
-	 				$check_timeinout = $this->settings_model->checkTimeIODuplication($data['time_in'],$data['time_out']);
+					 $check_timeinout = $this->settings_model->checkTimeIODuplication($data['time_in'],$data['time_out'],$data['id']);
+					 print_r($check_timeinout);
 	 				if($check_timeinout)
 	 				{
 	 					$result['message'] = 'Time in '.$data['time_in'].' or out '.$data['time_out'].' is already added.';
@@ -125,7 +126,23 @@
 	 		}
 
 	 		echo json_encode($result);
-	 	}
+		 }
+		 
+		public function deleteShift(){
+			$result            = array();
+			$result["message"] = "Error occured. Please contact system admin.";
+			$result["success"] = false;
+			$id                = $_POST["id"];
+
+			if(!empty($id)){
+				$delete = $this->settings_model->deleteShift($id);
+				if($delete){
+					$result["message"] = "Successfully deleted shift.";
+					$result["success"] = true;
+				}
+			}
+			echo json_encode($result);
+		}
 	 }
 	 // 	public function updateShift()
 	 // 	{

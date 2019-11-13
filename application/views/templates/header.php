@@ -297,7 +297,9 @@
                     <li class="<?php echo tabNavigation('settings', $page);?>">
                         <a href="javascript:;">
                             <i class="fas fa-cogs"></i>
+                            <span class="link-title">
                             &nbsp;Settings
+                            </span>
                         </a>
                         <ul class="collapse">
                             <?php if(checkPermission('my_shift')):?>

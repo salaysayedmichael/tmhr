@@ -10,7 +10,7 @@
 }
 .warning
 {
-	box-shadow: inset 0px 0px 6px 1px rgba(255,8,8,1);
+	box-shadow: inset 0px 0px 0.8px 0.8px rgba(255, 8, 8, 0.93)
 }
 .width-150
 {

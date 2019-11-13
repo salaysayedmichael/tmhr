@@ -6,7 +6,10 @@ class settings_model extends CI_Model {
 
 	}
 	public function insertShift($data) {
+		$data["break_in"]  = $data['break_in']  == '' ? NULL: $data['break_in'];
+		$data["break_out"] = $data['break_out'] == '' ? NULL: $data['break_out'];
 		// var_dump($data); exit;
+
 			$data = array(
 				'shift_name'    => $data['shift_name'],
 				'shift_details' => $data['shift_details'],
@@ -29,18 +32,16 @@ class settings_model extends CI_Model {
 		return $result;
 	}
 
-	public function checkShiftNameDuplication($shift_name)
+	public function checkShiftNameDuplication($shift_name,$id)
 	{
 		$result = False;
 			if(!empty($shift_name))
 			{
 				$sql = "SELECT * 
 					    FROM shifts
-					    WHERE shift_name = '{$shift_name}'";
-
+						WHERE shift_name = '{$shift_name}' AND sid <> {$id} deleted = 0";
 				$exe = $this->db->query($sql)->result_array();
-				
-				if(count($exe) > 0)
+				if($exe)
 				{
 					$result = True;
 				}	
@@ -48,7 +49,7 @@ class settings_model extends CI_Model {
 		return $result;
 	}
 
-	public function checkTimeIODuplication($time_in,$time_out)
+	public function checkTimeIODuplication($time_in,$time_out,$id)
 	{	
 		$result = False;
 		if(!empty($time_in) && !empty($time_out))
@@ -56,8 +57,7 @@ class settings_model extends CI_Model {
 			$sql = "SELECT *
 					FROM shifts 
 					WHERE time_in = '{$time_in}' 
-					OR time_out = '{$time_out}'";
-
+					AND time_out = '{$time_out}' AND sid <> {$id} AND deleted = 0";
 			$exe = $this->db->query($sql)->result_array();
 			if(count($exe) > 0)
 			{
@@ -76,7 +76,7 @@ class settings_model extends CI_Model {
 		if(!empty($id))
 		{
 			$sql = "SELECT * FROM shifts
-					WHERE id = '{$id}'";
+					WHERE sid = '{$id}'";
 			$exe = $this->db->query($sql)->result_array();
 
 			if(!empty($exe))
@@ -92,19 +92,32 @@ class settings_model extends CI_Model {
 	{
 		$result = False;
 		$data = array(
-			          'id' => $data['id'],
-			          'shift_name' => $data['shift_name'],
+			          'sid'            => $data['id'],
+			          'shift_name'    => $data['shift_name'],
 			          'shift_details' => $data['shift_details'],
-			          'time_in' => $data['time_in'],
-			          'time_out' => $data['time_out'],
-			          'break_in' => $data['break_in'],
-			          'break_out' => $data['break_out']
+			          'time_in'       => $data['time_in'],
+			          'time_out'      => $data['time_out'],
+			          'break_in'      => $data['break_in'],
+			          'break_out'     => $data['break_out']
 					 );
 		if(!empty($data))
 		{
-			$this->db->where('id', $data['id']);
+			$this->db->where('sid', $data['sid']);
 
 			$result = $this->db->update('shifts', $data);
+		}
+		return $result;
+	}
+
+	public function deleteShift($id){
+		$result = false;
+		if(!empty($id)){
+			$sql      = "UPDATE shifts SET deleted = 1 WHERE sid = ?";
+			$exe      = $this->db->query($sql,array($id));
+			$affected = $this->db->affected_rows();
+			if($affected){
+				$result = true;
+			}
 		}
 		return $result;
 	}
