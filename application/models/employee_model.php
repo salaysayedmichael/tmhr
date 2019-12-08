@@ -259,7 +259,6 @@ class Employee_model extends CI_Model {
             AND u.type <> 'administrator'
             AND u.deleted = 0
             ORDER BY e.last_name,e.first_name;";
-
         $exe = $this->db->query($sql)->result_array();
 
         if(!empty($exe)) {

@@ -23,7 +23,6 @@ class Evaluation extends MY_Controller {
         $data["sel_group"]            = $group;
         $data["filter_id"]            = $filter_id;
         $data["filter_status"]        = $filter_status;
-
         $this->loadView("evaluation/evaluation", $data);
     }
 

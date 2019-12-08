@@ -310,12 +310,12 @@
                                     </a>
                                 </li>
                              <?php endif;?>
-                            <li>
+                            <!-- <li>
                                 <a href="<?php echo base_url('settings/applyOvertime');?>">
                                     <i class="fas fa-business-time"></i>
                                     &nbsp;Overtime
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </li>
                 <?php endif;?>

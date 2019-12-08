@@ -219,14 +219,14 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Date Hired</label>
                                         <div class="col-lg-8">
-                                            <input type="text" name="date-hired" placeholder="" class="form-control date-picker text-right">
+                                            <input type="text" name="date-hired" placeholder="" class="form-control date-picker text-right" value="<?php echo date('m/d/Y');?>">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Position</label>
                                         <div class="col-lg-4">
-                                            <select name="position" class="form-control">
+                                            <select name="position" class="form-control" id="employee-position">
                                                 <option value="0" selected>Position</option>
 
                                                 <?php if(!empty($positions)) :?>
@@ -248,7 +248,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Employee Level</label>
                                         <div class="col-lg-4">
-                                            <select name="level" class="form-control">
+                                            <select name="level" class="form-control" id="employee-level">
                                                 <option value="employee" selected>Employee</option>
                                                 <option value="Department Head">Department Head</option>
                                                 <option value="administrator">Administrator</option>
@@ -266,7 +266,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Department</label>
                                         <div class="col-lg-4">
-                                            <select name="department" class="form-control">
+                                            <select name="department" class="form-control" id="employee-department">
                                                 <option value="0" selected>Department</option>
 
                                                 <?php if(!empty($departments)) :?>
@@ -288,7 +288,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-4">Employment Status</label>
                                         <div class="col-lg-4">
-                                            <select name="employment-status" class="form-control">
+                                            <select name="employment-status" class="form-control" id="employee-status">
                                                 <option value="0" selected>Employment Status</option>
                                                 <option>Probationary</option>
                                                 <option>Regular</option>

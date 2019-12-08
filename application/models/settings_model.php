@@ -38,7 +38,7 @@ class settings_model extends CI_Model {
 			if(!empty($shift_name))
 			{
 				$sql = "SELECT * 
-					    FROM shifts
+					    FROM shifts 
 						WHERE shift_name = '{$shift_name}' AND sid <> {$id} deleted = 0";
 				$exe = $this->db->query($sql)->result_array();
 				if($exe)

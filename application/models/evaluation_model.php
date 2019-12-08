@@ -177,7 +177,6 @@ class Evaluation_model extends CI_Model {
                 " . $where . "
                 ORDER By evaluated_name
                ";
-
         $exe = $this->db->query($sql)->result_array();
 
         if(!empty($exe)) {

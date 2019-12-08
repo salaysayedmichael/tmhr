@@ -6,11 +6,9 @@ class Employee extends MY_Controller {
     public function index()
     {
         $this->checkuserPermission("employee_home");
-
         $data["positions"]   = $this->employee_model->getPositionList();
         $data["departments"] = $this->employee_model->getDepartmentList();
         $data["employees"]   = $this->employee_model->getEmployees();
-
         $this->loadView("employee/employee", $data);
     }
 
@@ -115,7 +113,6 @@ class Employee extends MY_Controller {
             $positions                = $this->employee_model->getPositionList();
             $data["departments"]      = (!empty($departments)) ? array_column($departments, "department_title", "department_id") : array();
             $data["positions"]        = (!empty($positions)) ? array_column($positions, "position_title", "position_id") : array();
-
             $this->loadView("employee/employeeProfile", $data);
         } else {
             redirect(base_url() . 'dashboard', 'refresh');

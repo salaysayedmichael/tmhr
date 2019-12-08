@@ -16,32 +16,52 @@ $(document).ready(function() {
     });
 
     $("body").on("click", ".btn-employee-save", function() {
-        var form_data = $("#form-add-employee").find(':not(input[name=tm_hr_token])').serializeArray();
+        var position  = $("#employee-position").val()
+        var level     = $("#employee-level").val()
+        var dept      = $("#employee-department").val()
+        var status    = $("#employee-status").val() 
+        var form_data = $("#form-add-employee").find(':not(input[name = tm_hr_token])').serializeArray();
         var base_url  = $(".base-url").val();
-
-        $.ajax({
-            url  : base_url + "employee/insertEmployee",
-            type : 'POST',
-            data :{
-                'tm_hr_token' : $("#form-add-employee").find("input[name='tm_hr_token']").val(),
-                'data' : form_data
-            },
-            success: function(result) {
-                data = JSON.parse(result);
-
-                if(data.error == true) {
-                    alertify.alert(getMessageType("invalid") + "Employee Add", data.message);
-                } else {
-                    alertify.alert(getMessageType("success") + "Employee Add",
-                                   data.message,
-                                   function() {
-                                    location.reload();
-                                   });
-
-                    $("#form-add-employee").trigger("reset");
+        if(position != "0"){
+            if(level != "0"){
+                if(dept != "0"){
+                    if(status != "0"){
+                        $.ajax({
+                            url  : base_url + "employee/insertEmployee",
+                            type : 'POST',
+                            data :{
+                                'tm_hr_token' : $("#form-add-employee").find("input[name='tm_hr_token']").val(),
+                                'data' : form_data
+                            },
+                            success: function(result) {
+                                data = JSON.parse(result);
+                
+                                if(data.error == true) {
+                                    alertify.alert(getMessageType("invalid") + "Employee Add", data.message);
+                                } else {
+                                    alertify.alert(getMessageType("success") + "Employee Add",
+                                                   data.message,
+                                                   function() {
+                                                    location.reload();
+                                                   });
+                
+                                    $("#form-add-employee").trigger("reset");
+                                }
+                            }
+                        });
+                    }else{
+                        alertify.alert(getMessageType("invalid") + "Employee Add", "Please select Employment Status");
+                    }
+                }else{
+                    alertify.alert(getMessageType("invalid") + "Employee Add", "Please select Department");
                 }
+            }else{
+                alertify.alert(getMessageType("invalid") + "Employee Add", "Please select Employee Level");
             }
-        });
+        }else{
+            alertify.alert(getMessageType("invalid") + "Employee Add", "Please select Position");
+        }
+        
     });
 
     $("body").on("input", "#employee-first-name", function() {
